@@ -9,7 +9,9 @@ Route::get('/', function () {
 })->name('home');
 
 Route::get('/novidades', fn () => Inertia::render('News/Index'))->name('news.index');
-Route::get('/personagens', fn () => Inertia::render('Characters/Index'))->name('characters.index');
+Route::get('/personagens', fn () => Inertia::render('Characters/Index', [
+    'initialQuery' => request('q', ''),
+]))->name('characters.index');
 Route::get('/guildas', fn () => Inertia::render('Guilds/Index'))->name('guilds.index');
 Route::get('/ranking', fn () => Inertia::render('Highscores/Index'))->name('highscores.index');
 Route::get('/guerra', fn () => Inertia::render('War/Index'))->name('war.index');

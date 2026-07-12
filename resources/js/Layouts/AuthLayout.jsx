@@ -1,31 +1,18 @@
-import { Link } from '@inertiajs/react';
-import { ArrowLeft } from 'lucide-react';
+import SiteHeader from '@/Components/SiteHeader';
+import Footer from '@/Components/Footer';
 import KiParticles from '@/Components/KiParticles';
 
 export default function AuthLayout({ children }) {
     return (
-        <div className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden bg-void px-4 py-10 text-parchment">
-            <KiParticles count={36} />
+        <div className="flex min-h-screen flex-col bg-void text-parchment">
+            <SiteHeader />
 
-            <Link
-                href={route('home')}
-                className="relative z-10 mb-8 flex items-center gap-2"
-            >
-                <span className="brand-mark" />
-                <span className="brand-name text-lg">
-                    Dragon Ball <span className="text-ki-orange">War</span>
-                </span>
-            </Link>
+            <main className="relative flex flex-1 items-center justify-center overflow-hidden px-4 py-12">
+                <KiParticles count={36} />
+                <div className="relative z-10 w-full max-w-md">{children}</div>
+            </main>
 
-            <div className="relative z-10 w-full max-w-md">{children}</div>
-
-            <Link
-                href={route('home')}
-                className="relative z-10 mt-8 inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wide text-ash hover:text-ki-orange"
-            >
-                <ArrowLeft size={13} />
-                Voltar para o site
-            </Link>
+            <Footer />
         </div>
     );
 }

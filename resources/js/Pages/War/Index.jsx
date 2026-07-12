@@ -2,6 +2,7 @@ import { Head } from '@inertiajs/react';
 import { Swords } from 'lucide-react';
 import PublicLayout from '@/Layouts/PublicLayout';
 import PageHeader from '@/Components/PageHeader';
+import StatStrip from '@/Components/StatStrip';
 
 const WARS = [
     {
@@ -30,6 +31,12 @@ const WARS = [
     },
 ];
 
+const STATS = [
+    { label: 'Guerras ativas', value: WARS.filter((w) => w.status === 'Em andamento').length },
+    { label: 'Encerradas', value: WARS.filter((w) => w.status === 'Encerrada').length },
+    { label: 'Frags totais', value: WARS.reduce((sum, w) => sum + w.killsA + w.killsB, 0) },
+];
+
 export default function WarIndex() {
     return (
         <>
@@ -42,7 +49,9 @@ export default function WarIndex() {
                     description="Guerras ativas e encerradas entre guildas. Limite de frags decide o vencedor."
                 />
 
-                <div className="mt-8 rounded-2xl border border-line bg-gradient-to-br from-ember to-ember-2 p-6 text-center">
+                <StatStrip stats={STATS} />
+
+                <div className="mt-6 rounded-2xl border border-line bg-gradient-to-br from-ember to-ember-2 p-6 text-center">
                     <p className="font-mono text-xs uppercase tracking-[0.2em] text-kame-blue">
                         Próxima janela de guerra livre
                     </p>

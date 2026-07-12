@@ -1,7 +1,8 @@
 import { Head } from '@inertiajs/react';
-import { MessageCircle, ShieldCheck, Users } from 'lucide-react';
+import { MessageCircle, ShieldCheck, Trophy, Users } from 'lucide-react';
 import PublicLayout from '@/Layouts/PublicLayout';
 import PageHeader from '@/Components/PageHeader';
+import StatStrip from '@/Components/StatStrip';
 
 const STAFF = [
     { name: 'ITALOx', role: 'Administrador' },
@@ -16,7 +17,20 @@ const RULES = [
     'Bugs devem ser reportados no canal #bugs, não explorados.',
 ];
 
+const ACTIVITY = [
+    { text: 'Vyrune derrotou o boss Freeza (Forma Final)', time: '2 min atrás' },
+    { text: 'Guerreiros Z venceu a guerra contra Ordem Namek', time: '18 min atrás' },
+    { text: 'Corvain alcançou o nível 250', time: '41 min atrás' },
+    { text: 'Nova guilda registrada: Renegados de Namekusei', time: '1h atrás' },
+];
+
 export default function DiscordIndex() {
+    const stats = [
+        { label: 'Membros', value: '1.842' },
+        { label: 'Online agora', value: '128' },
+        { label: 'Canais', value: '24' },
+    ];
+
     return (
         <>
             <Head title="Discord" />
@@ -28,15 +42,28 @@ export default function DiscordIndex() {
                     description="Anúncios em tempo real, organização de raids e suporte direto com a equipe."
                 />
 
-                <div className="mt-8 rounded-2xl border border-line bg-gradient-to-br from-ember to-ember-2 p-8 text-center">
+                <StatStrip stats={stats} />
+
+                <div className="mt-6 rounded-2xl border border-line bg-gradient-to-br from-ember to-ember-2 p-8 text-center">
                     <MessageCircle size={32} className="mx-auto text-ki-orange" />
-                    <p className="mt-4 flex items-center justify-center gap-1.5 font-mono text-sm text-ash">
-                        <Users size={13} />
-                        1.842 membros · 128 online agora
-                    </p>
                     <a href="#" className="btn btn-solid mt-5 inline-flex py-3 px-6">
                         Entrar no servidor
                     </a>
+                </div>
+
+                <div className="mt-8 rounded-2xl border border-line bg-ember p-6">
+                    <h2 className="flex items-center gap-2 font-display text-lg text-parchment">
+                        <Trophy size={16} className="text-saiyan-gold" />
+                        Atividade recente
+                    </h2>
+                    <ul className="mt-3 space-y-3">
+                        {ACTIVITY.map((item) => (
+                            <li key={item.text} className="flex items-center justify-between gap-3 text-sm">
+                                <span className="text-parchment">{item.text}</span>
+                                <span className="shrink-0 font-mono text-xs text-ash">{item.time}</span>
+                            </li>
+                        ))}
+                    </ul>
                 </div>
 
                 <div className="mt-8 grid gap-4 sm:grid-cols-2">

@@ -1,16 +1,17 @@
 import { useState } from 'react';
 import { Head } from '@inertiajs/react';
-import { Gem, ShoppingCart } from 'lucide-react';
+import { Flame, Gem, ShoppingCart } from 'lucide-react';
 import PublicLayout from '@/Layouts/PublicLayout';
 import PageHeader from '@/Components/PageHeader';
+import StatStrip from '@/Components/StatStrip';
 
 const CATEGORIES = ['Todos', 'Bênçãos', 'Itens', 'Cosméticos', 'Montarias'];
 
 const ITEMS = [
     { name: 'Bênção da Terra', category: 'Bênçãos', price: 120, desc: '+5% de proteção contra todos os elementos.' },
     { name: 'Bênção Saiyajin', category: 'Bênçãos', price: 150, desc: 'Reduz o tempo de recarga da transformação.' },
-    { name: 'Esfera do Dragão (fragmento)', category: 'Itens', price: 300, desc: 'Colecione 7 para invocar Shenlong.' },
-    { name: 'Poção de Ki Máximo', category: 'Itens', price: 60, desc: 'Restaura 100% do ki instantaneamente.' },
+    { name: 'Esfera do Dragão (fragmento)', category: 'Itens', price: 300, desc: 'Colecione 7 para invocar Shenlong.', hot: true },
+    { name: 'Poção de Ki Máximo', category: 'Itens', price: 60, desc: 'Restaura 100% do ki instantaneamente.', hot: true },
     { name: 'Aura Dourada', category: 'Cosméticos', price: 200, desc: 'Efeito visual permanente ao redor do personagem.' },
     { name: 'Skin Namekuseijin Ancestral', category: 'Cosméticos', price: 250, desc: 'Visual exclusivo, sem alterar atributos.' },
     { name: 'Nimbus Voador', category: 'Montarias', price: 400, desc: 'Montaria com +20% de velocidade de voo.' },
@@ -22,6 +23,12 @@ export default function ShopIndex() {
     const balance = 480;
 
     const filtered = filter === 'Todos' ? ITEMS : ITEMS.filter((i) => i.category === filter);
+
+    const stats = [
+        { label: 'Itens à venda', value: ITEMS.length },
+        { label: 'Seu saldo', value: `${balance} pts` },
+        { label: 'Categorias', value: CATEGORIES.length - 1 },
+    ];
 
     return (
         <>
@@ -40,7 +47,9 @@ export default function ShopIndex() {
                     }
                 />
 
-                <div className="mt-6 flex flex-wrap gap-2">
+                <StatStrip stats={stats} />
+
+                <div className="mt-8 flex flex-wrap gap-2">
                     {CATEGORIES.map((cat) => (
                         <button
                             key={cat}
@@ -61,8 +70,16 @@ export default function ShopIndex() {
                     {filtered.map((item) => (
                         <div
                             key={item.name}
-                            className="flex flex-col rounded-2xl border border-line bg-ember p-5"
+                            className={`relative flex flex-col rounded-2xl border p-5 ${
+                                item.hot ? 'border-ki-orange/40 bg-gradient-to-br from-ember to-ember-2' : 'border-line bg-ember'
+                            }`}
                         >
+                            {item.hot && (
+                                <span className="absolute -top-2.5 right-4 inline-flex items-center gap-1 rounded-full bg-ki-orange px-2.5 py-1 text-[10px] font-mono font-bold uppercase text-void">
+                                    <Flame size={10} />
+                                    Mais vendido
+                                </span>
+                            )}
                             <span className="text-[10px] font-mono font-bold uppercase tracking-wide text-kame-blue">
                                 {item.category}
                             </span>

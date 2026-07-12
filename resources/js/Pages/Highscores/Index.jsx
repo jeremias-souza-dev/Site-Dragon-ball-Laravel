@@ -2,8 +2,11 @@ import { useState } from 'react';
 import { Head } from '@inertiajs/react';
 import PublicLayout from '@/Layouts/PublicLayout';
 import PageHeader from '@/Components/PageHeader';
+import StatStrip from '@/Components/StatStrip';
+import Pagination from '@/Components/Pagination';
 
 const TABS = ['Nível', 'Magia', 'Força', 'Ki'];
+const PER_PAGE = 8;
 
 const RANKING = [
     { name: 'Kaelthorn', vocation: 'Super Saiyajin', level: 2750, points: '1.954.320' },
@@ -20,8 +23,19 @@ const RANKING = [
     { name: 'Althenya', vocation: 'Terráqueo', level: 2210, points: '1.098.760' },
 ];
 
+const STATS = [
+    { label: 'Personagens rankeados', value: RANKING.length },
+    { label: 'Maior nível', value: RANKING[0].level },
+    { label: 'Atualizado', value: 'agora' },
+];
+
 export default function HighscoresIndex() {
     const [tab, setTab] = useState('Nível');
+    const [page, setPage] = useState(1);
+
+    const totalPages = Math.max(1, Math.ceil(RANKING.length / PER_PAGE));
+    const visible = RANKING.slice((page - 1) * PER_PAGE, page * PER_PAGE);
+    const offset = (page - 1) * PER_PAGE;
 
     return (
         <>
@@ -34,7 +48,9 @@ export default function HighscoresIndex() {
                     description="Os guerreiros mais fortes do servidor."
                 />
 
-                <div className="mt-6 flex flex-wrap gap-2">
+                <StatStrip stats={STATS} />
+
+                <div className="mt-8 flex flex-wrap gap-2">
                     {TABS.map((t) => (
                         <button
                             key={t}
@@ -69,14 +85,14 @@ export default function HighscoresIndex() {
                             </tr>
                         </thead>
                         <tbody>
-                            {RANKING.map((row, i) => (
+                            {visible.map((row, i) => (
                                 <tr key={row.name} className="border-t border-line hover:bg-white/5">
                                     <td
                                         className={`px-5 py-4 font-mono font-bold ${
-                                            i === 0 ? 'text-saiyan-gold' : 'text-ki-orange'
+                                            offset + i === 0 ? 'text-saiyan-gold' : 'text-ki-orange'
                                         }`}
                                     >
-                                        {i + 1}
+                                        {offset + i + 1}
                                     </td>
                                     <td className="px-5 py-4 font-bold text-parchment">{row.name}</td>
                                     <td className="px-5 py-4 text-ash">{row.vocation}</td>
@@ -87,6 +103,8 @@ export default function HighscoresIndex() {
                         </tbody>
                     </table>
                 </div>
+
+                <Pagination page={page} totalPages={totalPages} onChange={setPage} />
             </div>
         </>
     );

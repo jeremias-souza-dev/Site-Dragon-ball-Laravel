@@ -1,9 +1,12 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { Head } from '@inertiajs/react';
 import PublicLayout from '@/Layouts/PublicLayout';
 import PageHeader from '@/Components/PageHeader';
+import StatStrip from '@/Components/StatStrip';
+import Pagination from '@/Components/Pagination';
 
 const CATEGORIES = ['Todas', 'Atualização', 'Evento', 'Boss'];
+const PER_PAGE = 5;
 
 const BADGE_STYLE = {
     Atualização: 'bg-kame-blue text-void',
@@ -70,10 +73,27 @@ const NEWS = [
     },
 ];
 
+const STATS = [
+    { label: 'Publicadas', value: NEWS.length },
+    { label: 'Eventos ativos', value: NEWS.filter((n) => n.category === 'Evento').length },
+    { label: 'Bosses liberados', value: NEWS.filter((n) => n.category === 'Boss').length },
+];
+
 export default function NewsIndex() {
     const [filter, setFilter] = useState('Todas');
+    const [page, setPage] = useState(1);
 
     const filtered = filter === 'Todas' ? NEWS : NEWS.filter((n) => n.category === filter);
+    const totalPages = Math.max(1, Math.ceil(filtered.length / PER_PAGE));
+    const visible = useMemo(
+        () => filtered.slice((page - 1) * PER_PAGE, page * PER_PAGE),
+        [filtered, page],
+    );
+
+    const changeFilter = (cat) => {
+        setFilter(cat);
+        setPage(1);
+    };
 
     return (
         <>
@@ -86,12 +106,14 @@ export default function NewsIndex() {
                     description="Atualizações, eventos e bosses liberados no servidor."
                 />
 
-                <div className="mt-6 flex flex-wrap gap-2">
+                <StatStrip stats={STATS} />
+
+                <div className="mt-8 flex flex-wrap gap-2">
                     {CATEGORIES.map((cat) => (
                         <button
                             key={cat}
                             type="button"
-                            onClick={() => setFilter(cat)}
+                            onClick={() => changeFilter(cat)}
                             className={`rounded-full px-3.5 py-1.5 text-xs font-bold uppercase tracking-wide transition-colors ${
                                 filter === cat
                                     ? 'bg-ki-orange text-void'
@@ -103,8 +125,8 @@ export default function NewsIndex() {
                     ))}
                 </div>
 
-                <div className="mt-8 space-y-4">
-                    {filtered.map((item) => (
+                <div className="mt-6 space-y-4">
+                    {visible.map((item) => (
                         <article
                             key={item.title}
                             className="relative overflow-hidden rounded-2xl border border-line bg-ember p-6 transition hover:border-ki-orange/30"
@@ -125,12 +147,14 @@ export default function NewsIndex() {
                         </article>
                     ))}
 
-                    {filtered.length === 0 && (
+                    {visible.length === 0 && (
                         <p className="py-12 text-center text-sm text-ash">
                             Nenhuma notícia nessa categoria ainda.
                         </p>
                     )}
                 </div>
+
+                <Pagination page={page} totalPages={totalPages} onChange={setPage} />
             </div>
         </>
     );
