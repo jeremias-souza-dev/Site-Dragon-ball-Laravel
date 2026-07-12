@@ -1,13 +1,10 @@
 import { useMemo, useState } from 'react';
 import { Head } from '@inertiajs/react';
-import { ArrowUpDown, Search } from 'lucide-react';
+import { Search, X, Shield, Activity, Award, User } from 'lucide-react';
 import PublicLayout from '@/Layouts/PublicLayout';
 import PageHeader from '@/Components/PageHeader';
-import StatStrip from '@/Components/StatStrip';
-import Pagination from '@/Components/Pagination';
 
 const RACES = ['Todas', 'Saiyajin', 'Namekuseijin', 'Terráqueo', 'Androide', 'Majin'];
-const PER_PAGE = 6;
 
 const RACE_COLOR = {
     Saiyajin: 'bg-ki-orange',
@@ -17,6 +14,17 @@ const RACE_COLOR = {
     Majin: 'bg-danger',
 };
 
+const getRaceImage = (race) => {
+    const images = {
+        Saiyajin: 'https://images.unsplash.com/photo-1618336753974-aae8e04506aa?q=80&w=200',
+        Namekuseijin: 'https://images.unsplash.com/photo-1634612301347-1f4803932e67?q=80&w=200',
+        Terráqueo: 'https://images.unsplash.com/photo-1544376798-89aa6b82c0cd?q=80&w=200',
+        Androide: 'https://images.unsplash.com/photo-1635322967690-34190141361c?q=80&w=200',
+        Majin: 'https://images.unsplash.com/photo-1614728853356-119106093864?q=80&w=200',
+    };
+    return images[race] || 'https://images.unsplash.com/photo-1534796636912-3b95b3ab5986?q=80&w=200';
+};
+
 const CHARACTERS = [
     { name: 'Kaelthorn', level: 412, race: 'Saiyajin', guild: 'Guerreiros Z', online: true },
     { name: 'Vyrune', level: 398, race: 'Namekuseijin', guild: 'Guerreiros Z', online: true },
@@ -24,153 +32,96 @@ const CHARACTERS = [
     { name: 'Torreck', level: 371, race: 'Terráqueo', guild: 'Legião Vegeta', online: true },
     { name: 'Nissenka', level: 366, race: 'Androide', guild: '—', online: false },
     { name: 'Bralkor', level: 340, race: 'Saiyajin', guild: 'Ordem Namek', online: false },
-    { name: 'Fyorra', level: 312, race: 'Namekuseijin', guild: 'Ordem Namek', online: true },
-    { name: 'Dresk', level: 298, race: 'Majin', guild: '—', online: false },
-    { name: 'Althenya', level: 275, race: 'Terráqueo', guild: 'Guerreiros Z', online: false },
-    { name: 'Corvain', level: 251, race: 'Androide', guild: 'Legião Vegeta', online: true },
 ];
 
-export default function CharactersIndex({ initialQuery = '' }) {
-    const [search, setSearch] = useState(initialQuery);
-    const [race, setRace] = useState('Todas');
-    const [sortDesc, setSortDesc] = useState(true);
-    const [page, setPage] = useState(1);
+export default function CharactersIndex() {
+    const [search, setSearch] = useState('');
+    const [selectedChar, setSelectedChar] = useState(null);
 
-    const results = useMemo(() => {
-        const filtered = CHARACTERS.filter((c) => {
-            const matchesSearch = c.name.toLowerCase().includes(search.toLowerCase());
-            const matchesRace = race === 'Todas' || c.race === race;
-            return matchesSearch && matchesRace;
-        });
-        return filtered.sort((a, b) => (sortDesc ? b.level - a.level : a.level - b.level));
-    }, [search, race, sortDesc]);
-
-    const totalPages = Math.max(1, Math.ceil(results.length / PER_PAGE));
-    const visible = results.slice((page - 1) * PER_PAGE, page * PER_PAGE);
-
-    const stats = [
-        { label: 'Personagens', value: CHARACTERS.length },
-        { label: 'Online agora', value: CHARACTERS.filter((c) => c.online).length },
-        { label: 'Resultados', value: results.length },
-    ];
+    const results = useMemo(() => 
+        CHARACTERS.filter((c) => c.name.toLowerCase().includes(search.toLowerCase())),
+    [search]);
 
     return (
         <>
             <Head title="Personagens" />
 
-            <div className="mx-auto max-w-5xl px-4 py-12 sm:px-6">
-                <PageHeader
-                    kicker="// Busca de personagens"
-                    title="Personagens"
-                    description="Encontre heróis e vilões do servidor por nome ou raça."
-                />
-
-                <StatStrip stats={stats} />
-
-                <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-                    <div className="relative flex-1">
-                        <Search
-                            size={16}
-                            className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-ash"
-                        />
-                        <input
-                            type="text"
-                            value={search}
-                            onChange={(e) => {
-                                setSearch(e.target.value);
-                                setPage(1);
-                            }}
-                            placeholder="Buscar por nome..."
-                            className="w-full rounded-xl border border-white/10 bg-ember py-2.5 pl-10 pr-4 text-parchment outline-none placeholder:text-ash focus:border-ki-orange focus:ring-2 focus:ring-ki-orange/15"
-                        />
-                    </div>
-                    <select
-                        value={race}
-                        onChange={(e) => {
-                            setRace(e.target.value);
-                            setPage(1);
-                        }}
-                        className="rounded-xl border border-white/10 bg-ember px-4 py-2.5 text-parchment outline-none focus:border-ki-orange focus:ring-2 focus:ring-ki-orange/15"
-                    >
-                        {RACES.map((r) => (
-                            <option key={r} value={r}>
-                                {r}
-                            </option>
-                        ))}
-                    </select>
+            <div className="mx-auto max-w-5xl px-4 py-12">
+                <div className="mb-12 text-center">
+                    <h1 className="font-display text-5xl text-parchment font-normal tracking-tight">Galeria de Guerreiros</h1>
+                    <p className="mt-4 text-ash font-light text-lg">Explore os combatentes mais poderosos que habitam Terra.</p>
                 </div>
 
-                <div className="mt-6 overflow-hidden rounded-2xl border border-line bg-ember">
-                    <table className="w-full text-left text-sm">
-                        <thead className="bg-white/5 text-ash">
-                            <tr>
-                                <th className="px-5 py-3 text-[11px] font-mono uppercase tracking-[0.2em]">
-                                    Personagem
-                                </th>
-                                <th className="px-5 py-3 text-[11px] font-mono uppercase tracking-[0.2em]">
-                                    Raça
-                                </th>
-                                <th className="px-5 py-3 text-[11px] font-mono uppercase tracking-[0.2em]">
-                                    Guilda
-                                </th>
-                                <th className="px-5 py-3 text-[11px] font-mono uppercase tracking-[0.2em]">
-                                    <button
-                                        type="button"
-                                        onClick={() => setSortDesc((v) => !v)}
-                                        className="flex items-center gap-1 hover:text-parchment"
-                                    >
-                                        Nível
-                                        <ArrowUpDown size={11} />
-                                    </button>
-                                </th>
-                                <th className="px-5 py-3 text-[11px] font-mono uppercase tracking-[0.2em]">
-                                    Status
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {visible.map((c) => (
-                                <tr key={c.name} className="border-t border-line hover:bg-white/5">
-                                    <td className="px-5 py-3.5">
-                                        <div className="flex items-center gap-2.5">
-                                            <span
-                                                className={`h-2 w-2 rounded-full ${RACE_COLOR[c.race]}`}
-                                                aria-hidden="true"
-                                            />
-                                            <span className="font-bold text-parchment">{c.name}</span>
-                                        </div>
-                                    </td>
-                                    <td className="px-5 py-3.5 text-ash">{c.race}</td>
-                                    <td className="px-5 py-3.5 text-ash">{c.guild}</td>
-                                    <td className="px-5 py-3.5 font-mono text-kame-blue">{c.level}</td>
-                                    <td className="px-5 py-3.5">
-                                        <span
-                                            className={`inline-flex items-center gap-1.5 text-xs font-mono font-semibold uppercase ${
-                                                c.online ? 'text-good' : 'text-ash'
-                                            }`}
-                                        >
-                                            <span
-                                                className={`h-1.5 w-1.5 rounded-full ${c.online ? 'bg-good' : 'bg-ash'}`}
-                                            />
-                                            {c.online ? 'Online' : 'Offline'}
-                                        </span>
-                                    </td>
-                                </tr>
-                            ))}
-
-                            {visible.length === 0 && (
-                                <tr>
-                                    <td colSpan={5} className="px-5 py-10 text-center text-ash">
-                                        Nenhum personagem encontrado.
-                                    </td>
-                                </tr>
-                            )}
-                        </tbody>
-                    </table>
+                <div className="relative group max-w-xl mx-auto mb-12">
+                    <div className="absolute inset-0 bg-ki-orange/20 blur-xl rounded-full opacity-0 group-hover:opacity-100 transition-opacity" />
+                    <Search className="absolute left-4 top-3.5 text-ash" size={16} />
+                    <input
+                        type="text"
+                        placeholder="Filtrar por nome..."
+                        className="w-full rounded-2xl border border-line bg-ember py-3.5 pl-12 pr-4 text-parchment outline-none focus:border-ki-orange shadow-inner"
+                        onChange={(e) => setSearch(e.target.value)}
+                    />
                 </div>
 
-                <Pagination page={page} totalPages={totalPages} onChange={setPage} />
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {results.map((c) => (
+                        <button 
+                            key={c.name} 
+                            onClick={() => setSelectedChar(c)}
+                            className="flex items-center gap-4 p-4 rounded-2xl border border-line bg-ember hover:border-ki-orange/50 transition-all duration-300 hover:scale-[1.02] text-left"
+                        >
+                            <div className="h-20 w-20 shrink-0 overflow-hidden rounded-xl border border-line bg-void">
+                                <img src={getRaceImage(c.race)} className="h-full w-full object-cover opacity-90" />
+                            </div>
+                            <div>
+                                <div className="text-parchment text-lg font-normal tracking-wide">{c.name}</div>
+                                <div className="mt-1 flex items-center gap-3 text-[10px] text-ash tracking-widest uppercase">
+                                    <span className="flex items-center gap-1"><User size={10} /> {c.race}</span>
+                                    <span className="text-ki-orange font-mono">LVL {c.level}</span>
+                                </div>
+                            </div>
+                        </button>
+                    ))}
+                </div>
             </div>
+
+            {selectedChar && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-void/90 backdrop-blur-md">
+                    <div className="w-full max-w-sm rounded-[32px] border border-line bg-ember p-8 shadow-2xl relative overflow-hidden">
+                        <button onClick={() => setSelectedChar(null)} className="absolute top-6 right-6 text-ash hover:text-parchment transition">
+                            <X size={24} />
+                        </button>
+                        
+                        <div className="h-48 w-full overflow-hidden rounded-3xl border border-line mb-6">
+                            <img src={getRaceImage(selectedChar.race)} className="h-full w-full object-cover" />
+                        </div>
+                        
+                        <h2 className="text-4xl text-parchment font-normal mb-6">{selectedChar.name}</h2>
+                        
+                        <div className="space-y-4">
+                            <div className="flex items-center gap-3 text-ash font-light">
+                                <Award size={18} className="text-ki-orange" />
+                                <span>Nível <strong className="text-parchment font-normal">{selectedChar.level}</strong></span>
+                            </div>
+                            <div className="flex items-center gap-3 text-ash font-light">
+                                <Shield size={18} className="text-kame-blue" />
+                                <span>Guilda <strong className="text-parchment font-normal">{selectedChar.guild}</strong></span>
+                            </div>
+                            <div className="flex items-center gap-3 text-ash font-light">
+                                <Activity size={18} className="text-good" />
+                                <span>Status <strong className={selectedChar.online ? 'text-good' : 'text-ash'}>{selectedChar.online ? 'Online' : 'Offline'}</strong></span>
+                            </div>
+                        </div>
+
+                        <button 
+                            className="mt-8 w-full py-4 rounded-2xl bg-ki-orange text-void font-medium hover:bg-saiyan-gold transition"
+                            onClick={() => setSelectedChar(null)}
+                        >
+                            Fechar Ficha
+                        </button>
+                    </div>
+                </div>
+            )}
         </>
     );
 }
