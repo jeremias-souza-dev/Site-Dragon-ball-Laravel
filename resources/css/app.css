@@ -1,3 +1,189 @@
+@import '@fontsource/anton';
+@import '@fontsource/manrope/300.css';
+@import '@fontsource/manrope/400.css';
+@import '@fontsource/manrope/500.css';
+@import '@fontsource/manrope/600.css';
+@import '@fontsource/manrope/700.css';
+@import '@fontsource/manrope/800.css';
+@import '@fontsource/jetbrains-mono/400.css';
+@import '@fontsource/jetbrains-mono/500.css';
+@import '@fontsource/jetbrains-mono/600.css';
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  :root {
+    color-scheme: dark;
+    --color-ki-orange: #ff6a1f;
+    --color-saiyan-gold: #ffcf5c;
+  }
+
+  body {
+    @apply min-h-screen bg-void text-parchment font-sans antialiased text-[15px] leading-relaxed;
+    background-image:
+      radial-gradient(ellipse 70% 50% at 50% -10%, rgba(255,106,31,0.16), transparent 60%),
+      radial-gradient(ellipse 60% 40% at 85% 15%, rgba(53,194,224,0.10), transparent 60%),
+      #0d0906;
+  }
+
+  h1, h2, h3 {
+    @apply font-display font-normal uppercase tracking-wide text-parchment m-0;
+  }
+
+  .font-numeric {
+    @apply font-mono tabular-nums;
+  }
+
+  a {
+    @apply text-ki-orange hover:text-saiyan-gold;
+  }
+
+  ::selection {
+    @apply bg-ki-orange text-void;
+  }
+}
+
+@layer components {
+  .btn {
+    @apply inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wide px-4 py-2.5 rounded-xl border border-transparent cursor-pointer whitespace-nowrap transition-all duration-200;
+  }
+  .btn-ghost {
+    @apply border-line bg-white/0 text-parchment hover:bg-white/5 hover:border-ki-orange;
+  }
+  .btn-solid {
+    @apply bg-gradient-to-b from-ki-orange to-ki-orange-dim text-void shadow-[0_12px_28px_rgba(255,106,31,0.32)] hover:shadow-[0_16px_32px_rgba(255,106,31,0.42)] hover:-translate-y-0.5;
+  }
+
+  .topbar {
+    @apply sticky top-0 z-40 flex flex-wrap items-center justify-between gap-4 rounded-[32px] border border-line bg-[#0d0906cc] px-5 py-4 shadow-[0_12px_30px_rgba(0,0,0,0.4)] backdrop-blur-xl;
+  }
+  .brand {
+    @apply flex items-center gap-3;
+  }
+  .brand-mark {
+    @apply w-7 h-7 rounded-full shadow-[0_0_18px_rgba(255,106,31,0.4)];
+    background: conic-gradient(from 210deg, var(--color-ki-orange), var(--color-saiyan-gold), var(--color-ki-orange));
+  }
+  .brand-name {
+    @apply font-display font-normal text-xl tracking-wide text-parchment normal-case;
+  }
+
+  .nav-link {
+    @apply text-[12.5px] font-bold uppercase tracking-wide px-2.5 py-2 rounded-full transition-colors hover:text-parchment hover:bg-white/5 text-ash;
+  }
+  .nav-link.active {
+    @apply text-ki-orange bg-ki-orange/10;
+  }
+
+  .page-wrap {
+    @apply max-w-[1180px] mx-auto;
+  }
+
+  .auth-page {
+    @apply mx-auto max-w-5xl;
+  }
+  .auth-shell {
+    @apply grid gap-6;
+  }
+  .auth-panel {
+    @apply rounded-[28px] border border-line bg-[#0d0906cc] shadow-[0_24px_70px_rgba(0,0,0,0.4)] backdrop-blur-xl overflow-hidden;
+  }
+  .auth-kicker {
+    @apply inline-flex items-center gap-2 rounded-full bg-white/5 px-3 py-1 font-mono text-[11px] uppercase tracking-[0.22em] text-kame-blue;
+  }
+  .auth-title {
+    @apply mt-4 text-3xl sm:text-4xl lg:text-5xl leading-tight text-parchment;
+  }
+  .auth-copy {
+    @apply mt-4 max-w-xl text-sm sm:text-base leading-relaxed text-ash;
+  }
+  .auth-list {
+    @apply mt-6 flex flex-wrap gap-2;
+  }
+  .auth-list-item {
+    @apply inline-flex items-center gap-2 rounded-full bg-white/[0.03] px-3 py-2 text-sm text-parchment;
+  }
+  .auth-list-bullet {
+    @apply inline-flex h-5 w-5 items-center justify-center rounded-full bg-kame-blue/15 text-[10px] text-kame-blue;
+  }
+  .login-hero {
+    @apply p-6 sm:p-8 pb-5 sm:pb-6;
+  }
+  .login-form,
+  .create-form {
+    @apply p-4 sm:p-6 pt-0;
+  }
+  .login-google {
+    @apply mt-4 inline-flex w-full items-center justify-center gap-3 rounded-xl bg-white px-4 py-3 text-sm font-bold text-void shadow-[0_10px_24px_rgba(255,255,255,0.12)] transition-transform duration-200 ease-out hover:-translate-y-0.5;
+  }
+  .login-google svg {
+    @apply h-5 w-5;
+  }
+  .login-divider {
+    @apply my-4 flex items-center gap-3 text-[11px] uppercase tracking-[0.22em] text-ash;
+  }
+  .login-divider::before,
+  .login-divider::after {
+    content: "";
+    @apply h-px flex-1 bg-white/10;
+  }
+  .login-actions {
+    @apply mt-5 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between;
+  }
+  .login-links {
+    @apply mt-4 flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-ash;
+  }
+  .auth-link {
+    @apply font-bold text-ki-orange hover:text-saiyan-gold;
+  }
+
+  .create-page {
+    @apply mx-auto max-w-6xl;
+  }
+  .create-hero {
+    @apply p-6 sm:p-8 pb-4 sm:pb-5;
+  }
+  .create-stepper {
+    @apply mb-5 grid grid-cols-3 gap-2;
+  }
+  .create-stepper-item {
+    @apply rounded-full bg-white/[0.03] px-3 py-2 text-center text-sm font-bold text-ash;
+  }
+  .create-stepper-item-active {
+    @apply bg-ki-orange/10 text-parchment;
+  }
+  .auth-grid {
+    @apply grid gap-4;
+  }
+  .auth-field {
+    @apply rounded-2xl bg-white/[0.03] p-4;
+  }
+  .auth-field-label {
+    @apply mb-2 block text-[11px] font-bold uppercase tracking-wide text-ash;
+  }
+  .auth-full {
+    @apply md:col-span-2;
+  }
+  .create-actions {
+    @apply mt-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between;
+  }
+  .create-note {
+    @apply mt-4 text-center text-xs text-ash;
+  }
+  .content {
+    @apply space-y-4;
+  }
+
+  .auth-page input[type='text'],
+  .auth-page input[type='password'],
+  .auth-page input[type='email'],
+  .auth-page select {
+    @apply w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-parchment outline-none transition duration-150 ease-in-out focus:border-ki-orange focus:ring-2 focus:ring-ki-orange/15;
+  }
+
+  .auth-page input::placeholder {
+    @apply text-ash;
+  }
+}

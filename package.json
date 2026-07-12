@@ -22,9 +22,13 @@
         "vite": "^6.0.11"
     },
     "dependencies": {
+        "@fontsource/anton": "^5.2.7",
+        "@fontsource/jetbrains-mono": "^5.2.8",
+        "@fontsource/manrope": "^5.2.8",
         "@inertiajs/core": "^3.6.1",
         "@inertiajs/react": "^3.6.1",
         "@vitejs/plugin-react": "^5.2.0",
+        "lucide-react": "^1.24.0",
         "react": "^19.2.7",
         "react-dom": "^19.2.7"
     }

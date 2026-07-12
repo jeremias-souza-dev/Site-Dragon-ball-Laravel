@@ -1,5 +1,5 @@
 import PrimaryButton from '@/Components/PrimaryButton';
-import GuestLayout from '@/Layouts/GuestLayout';
+import AuthLayout from '@/Layouts/AuthLayout';
 import { Head, Link, useForm } from '@inertiajs/react';
 
 export default function VerifyEmail({ status }) {
@@ -12,39 +12,41 @@ export default function VerifyEmail({ status }) {
     };
 
     return (
-        <GuestLayout>
-            <Head title="Email Verification" />
+        <>
+            <Head title="Verificar e-mail" />
 
-            <div className="mb-4 text-sm text-gray-600">
-                Thanks for signing up! Before getting started, could you verify
-                your email address by clicking on the link we just emailed to
-                you? If you didn't receive the email, we will gladly send you
-                another.
-            </div>
+            <section className="auth-panel p-6 sm:p-8">
+                <span className="auth-kicker">Quase lá</span>
+                <h1 className="auth-title mt-4 text-2xl sm:text-3xl">Verifique seu e-mail</h1>
+                <p className="auth-copy mt-2 text-sm">
+                    Obrigado por se cadastrar! Antes de começar, clique no link que
+                    enviamos pro seu e-mail. Não recebeu? A gente reenvia.
+                </p>
 
-            {status === 'verification-link-sent' && (
-                <div className="mb-4 text-sm font-medium text-green-600">
-                    A new verification link has been sent to the email address
-                    you provided during registration.
-                </div>
-            )}
+                {status === 'verification-link-sent' && (
+                    <div className="mt-4 rounded-xl bg-good/10 p-3 text-sm font-semibold text-good">
+                        Um novo link de verificação foi enviado pro e-mail que você
+                        cadastrou.
+                    </div>
+                )}
 
-            <form onSubmit={submit}>
-                <div className="mt-4 flex items-center justify-between">
+                <form onSubmit={submit} className="mt-6 flex items-center justify-between gap-4">
                     <PrimaryButton disabled={processing}>
-                        Resend Verification Email
+                        Reenviar e-mail
                     </PrimaryButton>
 
                     <Link
                         href={route('logout')}
                         method="post"
                         as="button"
-                        className="rounded-md text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                        className="text-sm font-semibold text-ash hover:text-ki-orange"
                     >
-                        Log Out
+                        Sair
                     </Link>
-                </div>
-            </form>
-        </GuestLayout>
+                </form>
+            </section>
+        </>
     );
 }
+
+VerifyEmail.layout = (page) => <AuthLayout children={page} />;

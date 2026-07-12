@@ -2,7 +2,7 @@ import InputError from '@/Components/InputError';
 import InputLabel from '@/Components/InputLabel';
 import PrimaryButton from '@/Components/PrimaryButton';
 import TextInput from '@/Components/TextInput';
-import GuestLayout from '@/Layouts/GuestLayout';
+import AuthLayout from '@/Layouts/AuthLayout';
 import { Head, useForm } from '@inertiajs/react';
 
 export default function ConfirmPassword() {
@@ -19,37 +19,38 @@ export default function ConfirmPassword() {
     };
 
     return (
-        <GuestLayout>
-            <Head title="Confirm Password" />
+        <>
+            <Head title="Confirmar senha" />
 
-            <div className="mb-4 text-sm text-gray-600">
-                This is a secure area of the application. Please confirm your
-                password before continuing.
-            </div>
+            <section className="auth-panel p-6 sm:p-8">
+                <span className="auth-kicker">Área segura</span>
+                <h1 className="auth-title mt-4 text-2xl sm:text-3xl">Confirme sua senha</h1>
+                <p className="auth-copy mt-2 text-sm">
+                    Por segurança, confirme sua senha antes de continuar.
+                </p>
 
-            <form onSubmit={submit}>
-                <div className="mt-4">
-                    <InputLabel htmlFor="password" value="Password" />
+                <form onSubmit={submit} className="mt-6 space-y-4">
+                    <div>
+                        <InputLabel htmlFor="password" value="Senha" />
+                        <TextInput
+                            id="password"
+                            type="password"
+                            name="password"
+                            value={data.password}
+                            className="mt-1.5"
+                            isFocused={true}
+                            onChange={(e) => setData('password', e.target.value)}
+                        />
+                        <InputError message={errors.password} className="mt-2" />
+                    </div>
 
-                    <TextInput
-                        id="password"
-                        type="password"
-                        name="password"
-                        value={data.password}
-                        className="mt-1 block w-full"
-                        isFocused={true}
-                        onChange={(e) => setData('password', e.target.value)}
-                    />
-
-                    <InputError message={errors.password} className="mt-2" />
-                </div>
-
-                <div className="mt-4 flex items-center justify-end">
-                    <PrimaryButton className="ms-4" disabled={processing}>
-                        Confirm
+                    <PrimaryButton className="w-full justify-center py-3" disabled={processing}>
+                        Confirmar
                     </PrimaryButton>
-                </div>
-            </form>
-        </GuestLayout>
+                </form>
+            </section>
+        </>
     );
 }
+
+ConfirmPassword.layout = (page) => <AuthLayout children={page} />;
