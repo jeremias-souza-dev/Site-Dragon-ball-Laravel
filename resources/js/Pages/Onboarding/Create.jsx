@@ -4,13 +4,12 @@ import PrimaryButton from '@/Components/PrimaryButton';
 import SelectInput from '@/Components/SelectInput';
 import TextInput from '@/Components/TextInput';
 import AuthLayout from '@/Layouts/AuthLayout';
-import { Head, Link, useForm } from '@inertiajs/react';
+import { Head, useForm } from '@inertiajs/react';
 
-export default function Register({ vocations, cities, worlds }) {
+export default function Create({ vocations, cities, worlds }) {
     const { data, setData, post, processing, errors, reset } = useForm({
         name: '',
         nickname: '',
-        email: '',
         password: '',
         password_confirmation: '',
         character_name: '',
@@ -23,21 +22,21 @@ export default function Register({ vocations, cities, worlds }) {
     const submit = (e) => {
         e.preventDefault();
 
-        post(route('register'), {
+        post(route('onboarding.store'), {
             onFinish: () => reset('password', 'password_confirmation'),
         });
     };
 
     return (
         <>
-            <Head title="Criar conta" />
+            <Head title="Complete seu cadastro" />
 
             <section className="auth-panel p-6 sm:p-8">
-                <span className="auth-kicker">Cadastro</span>
-                <h1 className="auth-title mt-4 text-2xl sm:text-3xl">Crie sua conta</h1>
+                <span className="auth-kicker">Falta pouco</span>
+                <h1 className="auth-title mt-4 text-2xl sm:text-3xl">Complete seu cadastro</h1>
                 <p className="auth-copy mt-2 text-sm">
-                    Leva menos de um minuto. Você já sai daqui com sua conta e seu personagem
-                    criados.
+                    Sua conta Google já está conectada. Agora crie a senha do jogo e o seu
+                    personagem para começar a jogar.
                 </p>
 
                 <form onSubmit={submit} className="mt-6 space-y-8">
@@ -77,24 +76,8 @@ export default function Register({ vocations, cities, worlds }) {
                                 <InputError message={errors.nickname} className="mt-2" />
                             </div>
 
-                            <div className="sm:col-span-2">
-                                <InputLabel htmlFor="email" value="E-mail" />
-                                <TextInput
-                                    id="email"
-                                    type="email"
-                                    name="email"
-                                    value={data.email}
-                                    className="mt-1.5"
-                                    autoComplete="email"
-                                    placeholder="seuemail@exemplo.com"
-                                    onChange={(e) => setData('email', e.target.value)}
-                                    required
-                                />
-                                <InputError message={errors.email} className="mt-2" />
-                            </div>
-
                             <div>
-                                <InputLabel htmlFor="password" value="Senha" />
+                                <InputLabel htmlFor="password" value="Senha do jogo" />
                                 <TextInput
                                     id="password"
                                     type="password"
@@ -240,53 +223,12 @@ export default function Register({ vocations, cities, worlds }) {
                     </div>
 
                     <PrimaryButton className="w-full justify-center py-3" disabled={processing}>
-                        Criar conta
+                        Concluir cadastro
                     </PrimaryButton>
                 </form>
-
-                <div className="mt-6 flex items-center gap-3">
-                    <span className="h-px flex-1 bg-white/10" />
-                    <span className="text-xs uppercase tracking-wide text-ash">ou</span>
-                    <span className="h-px flex-1 bg-white/10" />
-                </div>
-
-                <a
-                    href={route('auth.google')}
-                    className="mt-4 flex w-full items-center justify-center gap-2 rounded-xl border border-white/10 bg-white/5 py-3 text-sm font-semibold text-white transition hover:bg-white/10"
-                >
-                    <svg className="h-5 w-5" viewBox="0 0 24 24">
-                        <path
-                            fill="#4285F4"
-                            d="M23.49 12.27c0-.79-.07-1.54-.19-2.27H12v4.51h6.47c-.29 1.48-1.14 2.73-2.4 3.58v2.98h3.89c2.28-2.1 3.53-5.19 3.53-8.8z"
-                        />
-                        <path
-                            fill="#34A853"
-                            d="M12 24c3.24 0 5.95-1.08 7.93-2.93l-3.89-2.98c-1.08.72-2.45 1.15-4.04 1.15-3.11 0-5.74-2.1-6.68-4.92H1.29v3.09C3.26 21.3 7.31 24 12 24z"
-                        />
-                        <path
-                            fill="#FBBC05"
-                            d="M5.32 14.32A7.19 7.19 0 0 1 4.94 12c0-.81.14-1.6.38-2.32V6.59H1.29A11.98 11.98 0 0 0 0 12c0 1.94.46 3.77 1.29 5.41z"
-                        />
-                        <path
-                            fill="#EA4335"
-                            d="M12 4.75c1.76 0 3.34.61 4.59 1.8l3.44-3.44C17.94 1.19 15.24 0 12 0 7.31 0 3.26 2.7 1.29 6.59l4.03 3.09c.94-2.82 3.57-4.93 6.68-4.93z"
-                        />
-                    </svg>
-                    Continuar com Google
-                </a>
-                <p className="mt-2 text-center text-xs text-ash">
-                    Com o Google você completa os dados do personagem no próximo passo.
-                </p>
-
-                <p className="mt-6 text-center text-sm text-ash">
-                    Já tem conta?{' '}
-                    <Link href={route('login')} className="auth-link">
-                        Entrar
-                    </Link>
-                </p>
             </section>
         </>
     );
 }
 
-Register.layout = (page) => <AuthLayout children={page} maxWidth="max-w-2xl" />;
+Create.layout = (page) => <AuthLayout children={page} maxWidth="max-w-2xl" />;

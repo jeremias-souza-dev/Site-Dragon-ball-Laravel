@@ -18,6 +18,8 @@ return new class extends Migration
             $table->tinyInteger('done')->nullable();
             $table->tinyInteger('priority')->nullable();
             $table->boolean('closed')->default(false);
+
+            $table->index(['closed', 'category']);
         });
 
         Schema::create('friends', function (Blueprint $table) {
@@ -26,6 +28,8 @@ return new class extends Migration
             $table->foreignId('friend')->nullable()->constrained('accounts')->cascadeOnDelete();
             $table->integer('time')->nullable();
             $table->boolean('active')->default(false);
+
+            $table->index(['with', 'active']);
         });
 
         Schema::create('messages', function (Blueprint $table) {
@@ -38,6 +42,8 @@ return new class extends Migration
             $table->boolean('delete_from')->default(false);
             $table->boolean('delete_to')->default(false);
             $table->boolean('unread')->default(false);
+
+            $table->index(['to', 'unread']);
         });
 
         Schema::create('shop_donation_history', function (Blueprint $table) {

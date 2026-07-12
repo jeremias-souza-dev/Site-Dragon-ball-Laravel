@@ -28,6 +28,8 @@ return new class extends Migration
             $table->string('author', 64)->nullable();
             $table->integer('time')->default(0);
             $table->foreignId('board_id')->nullable()->constrained('forums')->cascadeOnDelete();
+
+            $table->index(['board_id', 'sticked', 'time']);
         });
 
         Schema::create('posts', function (Blueprint $table) {
@@ -38,6 +40,8 @@ return new class extends Migration
             $table->string('author', 64)->nullable();
             $table->foreignId('board_id')->nullable()->constrained('forums')->cascadeOnDelete();
             $table->foreignId('thread_id')->nullable()->constrained('threads')->cascadeOnDelete();
+
+            $table->index(['thread_id', 'time']);
         });
     }
 

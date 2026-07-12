@@ -12,7 +12,7 @@ return new class extends Migration
             $table->id();
             $table->string('title', 150)->default('');
             $table->text('body')->nullable();
-            $table->integer('time')->default(0);
+            $table->integer('time')->default(0)->index();
         });
 
         Schema::create('comments', function (Blueprint $table) {

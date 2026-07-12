@@ -20,6 +20,7 @@ class Player extends Model
         'group_id',
         'level',
         'vocation',
+        'world_id',
         'health',
         'healthmax',
         'experience',
@@ -68,6 +69,54 @@ class Player extends Model
         'comment',
         'account_id',
     ];
+
+    /**
+     * Valores padrão de um personagem recém-criado, espelhando os defaults do dbo.
+     */
+    public static function defaultStats(): array
+    {
+        return [
+            'health' => 150,
+            'healthmax' => 150,
+            'experience' => 0,
+            'lookbody' => 0,
+            'lookfeet' => 0,
+            'lookhead' => 0,
+            'looklegs' => 0,
+            'looktype' => 136,
+            'lookaddons' => 0,
+            'maglevel' => 0,
+            'mana' => 0,
+            'manamax' => 0,
+            'manaspent' => 0,
+            'soul' => 0,
+            'posx' => 0,
+            'posy' => 0,
+            'posz' => 0,
+            'cap' => 0,
+            'lastlogin' => 0,
+            'lastip' => 0,
+            'save' => 1,
+            'skull' => 0,
+            'skulltime' => 0,
+            'rank_id' => 0,
+            'lastlogout' => 0,
+            'blessings' => 0,
+            'balance' => 0,
+            'stamina' => 151200000,
+            'direction' => 2,
+            'loss_experience' => 100,
+            'loss_mana' => 100,
+            'loss_skills' => 100,
+            'loss_containers' => 100,
+            'loss_items' => 100,
+            'premend' => 0,
+            'marriage' => 0,
+            'promotion' => 0,
+            'worldtransfer' => 0,
+            'nick_verify' => 0,
+        ];
+    }
 
     public function account(): BelongsTo
     {

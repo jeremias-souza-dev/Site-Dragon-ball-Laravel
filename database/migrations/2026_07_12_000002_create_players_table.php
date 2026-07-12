@@ -11,6 +11,7 @@ return new class extends Migration
         Schema::create('players', function (Blueprint $table) {
             $table->id();
             $table->string('name')->unique();
+            $table->unsignedTinyInteger('world_id')->default(0);
             $table->boolean('online')->default(false);
             $table->boolean('deleted')->default(false);
             $table->boolean('hide_char')->default(false);
@@ -63,8 +64,15 @@ return new class extends Migration
             $table->string('old_name')->nullable();
             $table->text('description')->nullable();
             $table->text('comment')->nullable();
+            $table->boolean('cast')->default(false);
+            $table->integer('castViewers')->default(0);
+            $table->string('castDescription')->nullable();
+            $table->integer('created')->nullable();
             $table->foreignId('account_id')->constrained()->cascadeOnDelete();
             $table->timestamps();
+
+            $table->index(['deleted', 'experience']);
+            $table->index(['deleted', 'online']);
         });
     }
 

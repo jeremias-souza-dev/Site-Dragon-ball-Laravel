@@ -10,8 +10,10 @@ return new class extends Migration
     {
         Schema::create('accounts', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('user_id')->nullable()->unique()->constrained()->nullOnDelete();
             $table->string('name');
             $table->string('password');
+            $table->string('salt', 40)->default('');
             $table->string('email')->unique();
             $table->string('email_new')->nullable();
             $table->string('email_code')->nullable();
@@ -20,13 +22,18 @@ return new class extends Migration
             $table->string('nickname')->nullable();
             $table->string('avatar')->nullable();
             $table->string('key')->nullable();
+            $table->boolean('blocked')->default(false);
+            $table->integer('warnings')->default(0);
+            $table->integer('group_id')->default(1);
             $table->integer('premdays')->default(0);
+            $table->unsignedInteger('lastday')->default(0);
             $table->integer('type')->default(1);
             $table->integer('premium_points')->default(0);
             $table->integer('page_access')->nullable();
             $table->integer('page_lastday')->nullable();
             $table->integer('email_new_time')->nullable();
             $table->integer('next_email')->nullable();
+            $table->integer('created')->nullable();
             $table->text('about_me')->nullable();
             $table->timestamps();
         });

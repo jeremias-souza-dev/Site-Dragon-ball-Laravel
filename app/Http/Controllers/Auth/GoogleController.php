@@ -45,6 +45,10 @@ class GoogleController extends Controller
 
         Auth::login($user, remember: true);
 
+        if (! $user->account()->exists()) {
+            return redirect()->route('onboarding.create');
+        }
+
         return redirect()->intended(route('dashboard', absolute: false));
     }
 }

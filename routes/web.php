@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\OnboardingController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -20,9 +21,14 @@ Route::get('/discord', fn () => Inertia::render('Discord/Index'))->name('discord
 
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+})->middleware(['auth', 'verified', 'account.exists'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
+    Route::get('/completar-cadastro', [OnboardingController::class, 'create'])->name('onboarding.create');
+    Route::post('/completar-cadastro', [OnboardingController::class, 'store'])->name('onboarding.store');
+});
+
+Route::middleware(['auth', 'account.exists'])->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');

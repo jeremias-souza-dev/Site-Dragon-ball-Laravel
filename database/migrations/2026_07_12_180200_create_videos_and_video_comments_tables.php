@@ -15,7 +15,7 @@ return new class extends Migration
             $table->text('description')->nullable();
             $table->string('youtube', 45)->nullable();
             $table->integer('views')->default(0);
-            $table->integer('time')->default(0);
+            $table->integer('time')->default(0)->index();
         });
 
         Schema::create('video_comments', function (Blueprint $table) {
