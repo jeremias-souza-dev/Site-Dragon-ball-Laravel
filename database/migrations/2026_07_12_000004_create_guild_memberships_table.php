@@ -11,12 +11,18 @@ return new class extends Migration
         Schema::create('guild_memberships', function (Blueprint $table) {
             $table->id();
             $table->integer('rank_id');
-            $table->foreignId('player_id')->constrained()->cascadeOnDelete();
-            $table->foreignId('guild_id')->constrained()->cascadeOnDelete();
+
+            // Alterado para corresponder ao tipo INT UNSIGNED de players e guilds
+            $table->unsignedInteger('player_id');
+            $table->foreign('player_id')->references('id')->on('players')->cascadeOnDelete();
+
+            $table->unsignedInteger('guild_id');
+            $table->foreign('guild_id')->references('id')->on('guilds')->cascadeOnDelete();
+
             $table->timestamps();
         });
     }
-
+    
     public function down()
     {
         Schema::dropIfExists('guild_memberships');

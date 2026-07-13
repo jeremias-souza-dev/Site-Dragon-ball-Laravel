@@ -12,36 +12,48 @@ return new class extends Migration
             $table->id();
             $table->tinyInteger('category');
             $table->integer('time')->nullable();
-            $table->foreignId('author')->constrained('players')->cascadeOnDelete();
             $table->text('text')->nullable();
             $table->string('title', 120)->nullable();
             $table->tinyInteger('done')->nullable();
             $table->tinyInteger('priority')->nullable();
             $table->boolean('closed')->default(false);
 
+            // Correção aqui:
+            $table->unsignedInteger('author');
+            $table->foreign('author')->references('id')->on('players')->cascadeOnDelete();
+
             $table->index(['closed', 'category']);
         });
-
         Schema::create('friends', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('with')->nullable()->constrained('accounts')->cascadeOnDelete();
-            $table->foreignId('friend')->nullable()->constrained('accounts')->cascadeOnDelete();
             $table->integer('time')->nullable();
             $table->boolean('active')->default(false);
+
+            // Correção aqui:
+            $table->unsignedInteger('with')->nullable();
+            $table->foreign('with')->references('id')->on('accounts')->cascadeOnDelete();
+
+            $table->unsignedInteger('friend')->nullable();
+            $table->foreign('friend')->references('id')->on('accounts')->cascadeOnDelete();
 
             $table->index(['with', 'active']);
         });
 
         Schema::create('messages', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('from')->nullable()->constrained('accounts')->cascadeOnDelete();
-            $table->foreignId('to')->nullable()->constrained('accounts')->cascadeOnDelete();
             $table->string('title', 120)->nullable();
             $table->text('text')->nullable();
             $table->integer('time')->nullable();
             $table->boolean('delete_from')->default(false);
             $table->boolean('delete_to')->default(false);
             $table->boolean('unread')->default(false);
+
+            // Correção aqui:
+            $table->unsignedInteger('from')->nullable();
+            $table->foreign('from')->references('id')->on('accounts')->cascadeOnDelete();
+
+            $table->unsignedInteger('to')->nullable();
+            $table->foreign('to')->references('id')->on('accounts')->cascadeOnDelete();
 
             $table->index(['to', 'unread']);
         });

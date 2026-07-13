@@ -10,7 +10,6 @@ return new class extends Migration
     {
         Schema::create('z_shop_history_item', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('player_id')->nullable()->constrained()->nullOnDelete();
             $table->string('player_name', 255);
             $table->unsignedInteger('item_id');
             $table->string('item_name', 255);
@@ -20,6 +19,10 @@ return new class extends Migration
             $table->unsignedBigInteger('trans_real')->default(0);
             $table->string('trans_state', 50)->default('pending');
             $table->timestamps();
+
+            // Correção aqui:
+            $table->unsignedInteger('player_id')->nullable();
+            $table->foreign('player_id')->references('id')->on('players')->nullOnDelete();
         });
     }
 

@@ -27,7 +27,10 @@ return new class extends Migration
             $table->id();
             $table->foreignId('answer_id')->nullable()->constrained('poll_answer')->cascadeOnDelete();
             $table->foreignId('poll_id')->nullable()->constrained('poll')->cascadeOnDelete();
-            $table->foreignId('account_id')->constrained('accounts')->cascadeOnDelete();
+
+            // Correção aqui:
+            $table->unsignedInteger('account_id');
+            $table->foreign('account_id')->references('id')->on('accounts')->cascadeOnDelete();
         });
     }
 

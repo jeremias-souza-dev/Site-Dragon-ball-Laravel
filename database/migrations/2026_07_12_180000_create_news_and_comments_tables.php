@@ -20,7 +20,9 @@ return new class extends Migration
             $table->foreignId('news_id')->nullable()->constrained('news')->cascadeOnDelete();
             $table->text('body')->nullable();
             $table->integer('time')->default(0);
-            $table->foreignId('author')->nullable()->constrained('players')->cascadeOnDelete();
+
+            $table->unsignedInteger('author')->nullable();
+            $table->foreign('author')->references('id')->on('players')->cascadeOnDelete();
         });
     }
 

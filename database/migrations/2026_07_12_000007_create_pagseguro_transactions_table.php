@@ -14,11 +14,14 @@ return new class extends Migration
             $table->string('status');
             $table->integer('item_count');
             $table->integer('points_added');
-            $table->foreignId('account_id')->constrained()->cascadeOnDelete();
+
+            // Alterado para corresponder ao INT UNSIGNED da tabela accounts
+            $table->unsignedInteger('account_id');
+            $table->foreign('account_id')->references('id')->on('accounts')->cascadeOnDelete();
+
             $table->timestamps();
         });
     }
-
     public function down()
     {
         Schema::dropIfExists('pagseguro_transactions');

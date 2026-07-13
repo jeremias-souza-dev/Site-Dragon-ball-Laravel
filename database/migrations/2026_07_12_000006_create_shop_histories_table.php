@@ -11,7 +11,12 @@ return new class extends Migration
         Schema::create('shop_histories', function (Blueprint $table) {
             $table->id();
             $table->boolean('processed')->default(false);
-            $table->foreignId('player_id')->constrained()->cascadeOnDelete();
+
+            // Alterado de foreignId para unsignedInteger para bater com a tabela players
+            $table->unsignedInteger('player_id');
+            $table->foreign('player_id')->references('id')->on('players')->cascadeOnDelete();
+
+            // Este pode continuar como foreignId se a tabela shop_offers usar $table->id()
             $table->foreignId('product_id')->constrained('shop_offers')->cascadeOnDelete();
             $table->timestamps();
         });

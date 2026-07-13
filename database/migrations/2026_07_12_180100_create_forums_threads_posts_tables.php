@@ -17,9 +17,11 @@ return new class extends Migration
             $table->text('moderators')->nullable();
             $table->integer('order')->nullable();
             $table->boolean('requireLogin')->default(false);
-            $table->foreignId('guild')->nullable()->constrained('guilds')->nullOnDelete();
-        });
 
+            $table->unsignedInteger('guild')->nullable();
+            $table->foreign('guild')->references('id')->on('guilds')->nullOnDelete();
+        });
+        
         Schema::create('threads', function (Blueprint $table) {
             $table->id();
             $table->string('name', 120)->nullable();

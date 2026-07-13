@@ -10,20 +10,26 @@ return new class extends Migration
     {
         Schema::create('videos', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('author')->nullable()->constrained('players')->cascadeOnDelete();
             $table->string('title', 120)->nullable();
             $table->text('description')->nullable();
             $table->string('youtube', 45)->nullable();
             $table->integer('views')->default(0);
             $table->integer('time')->default(0)->index();
+
+            // Correção aqui:
+            $table->unsignedInteger('author')->nullable();
+            $table->foreign('author')->references('id')->on('players')->cascadeOnDelete();
         });
 
         Schema::create('video_comments', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('author')->nullable()->constrained('players')->cascadeOnDelete();
             $table->foreignId('video')->nullable()->constrained('videos')->cascadeOnDelete();
             $table->integer('time')->default(0);
             $table->text('text')->nullable();
+
+            // Correção aqui:
+            $table->unsignedInteger('author')->nullable();
+            $table->foreign('author')->references('id')->on('players')->cascadeOnDelete();
         });
     }
 
