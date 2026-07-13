@@ -24,8 +24,8 @@ Route::get('/dashboard', function () {
 })->middleware(['auth', 'verified', 'account.exists'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
-    Route::get('/completar-cadastro', [OnboardingController::class, 'create'])->name('onboarding.create');
-    Route::post('/completar-cadastro', [OnboardingController::class, 'store'])->name('onboarding.store');
+    Route::get('/create/character', [OnboardingController::class, 'create'])->name('onboarding.create');
+    Route::post('/create/character', [OnboardingController::class, 'store'])->name('onboarding.store');
 });
 
 Route::middleware(['auth', 'account.exists'])->group(function () {

@@ -27,6 +27,7 @@ function scanPages(directory) {
 const pageEntries = scanPages(path.resolve('resources/js/Pages'));
 
 export default defineConfig({
+    base: './',
     plugins: [
         laravel({
             input: ['resources/js/app.jsx', ...pageEntries],

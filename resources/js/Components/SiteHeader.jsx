@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Link, usePage } from '@inertiajs/react';
-import { LogIn, Menu, UserPlus, X } from 'lucide-react';
+import { LayoutDashboard, LogIn, LogOut, Menu, User, UserPlus, X } from 'lucide-react';
+import Dropdown from '@/Components/Dropdown';
 
 const NAV_LINKS = [
     { label: 'Novidades', href: () => route('news.index') },
@@ -14,7 +15,8 @@ const NAV_LINKS = [
 
 export default function SiteHeader() {
     const [mobileOpen, setMobileOpen] = useState(false);
-    const { url } = usePage();
+    const { url, props } = usePage();
+    const user = props.auth.user;
 
     return (
         <header className="sticky top-0 z-40 border-b border-line bg-void/85 backdrop-blur-xl">
@@ -43,14 +45,66 @@ export default function SiteHeader() {
                 </nav>
 
                 <div className="hidden items-center gap-2 md:flex">
-                    <Link href={route('login')} className="btn btn-ghost">
-                        <LogIn size={14} />
-                        Entrar
-                    </Link>
-                    <Link href={route('register')} className="btn btn-solid">
-                        <UserPlus size={14} />
-                        Criar Conta
-                    </Link>
+                    {user ? (
+                        <Dropdown>
+                            <Dropdown.Trigger>
+                                <button
+                                    type="button"
+                                    className="flex items-center gap-2 rounded-lg border border-line px-3 py-2 text-sm font-semibold text-parchment transition hover:bg-white/5"
+                                >
+                                    <span className="flex h-6 w-6 items-center justify-center rounded-full bg-ki-orange/15 text-ki-orange">
+                                        <User size={14} />
+                                    </span>
+                                    {user.name}
+                                </button>
+                            </Dropdown.Trigger>
+
+                            <Dropdown.Content
+                                contentClasses="border border-line bg-void py-1"
+                            >
+                                <Dropdown.Link
+                                    href={route('dashboard')}
+                                    className="!text-parchment hover:!bg-white/5"
+                                >
+                                    <span className="flex items-center gap-2">
+                                        <LayoutDashboard size={14} />
+                                        Dashboard
+                                    </span>
+                                </Dropdown.Link>
+                                <Dropdown.Link
+                                    href={route('profile.edit')}
+                                    className="!text-parchment hover:!bg-white/5"
+                                >
+                                    <span className="flex items-center gap-2">
+                                        <User size={14} />
+                                        Perfil
+                                    </span>
+                                </Dropdown.Link>
+                                <Dropdown.Link
+                                    href={route('logout')}
+                                    method="post"
+                                    as="button"
+                                    className="!text-parchment hover:!bg-white/5"
+                                >
+                                    <span className="flex items-center gap-2">
+                                        <LogOut size={14} />
+                                        Sair
+                                    </span>
+                                </Dropdown.Link>
+                            </Dropdown.Content>
+                        </Dropdown>
+                    ) : (
+                        <>
+                            <Link href={route('login')} className="btn btn-ghost">
+                                <LogIn size={14} />
+                                Entrar
+                            </Link>
+                            <Link href={route('register')} className="btn btn-solid">
+                                <UserPlus size={14} />
+                                Criar Conta
+                            </Link>
+                        </>
+                    )}
                 </div>
 
                 <button
@@ -78,12 +132,45 @@ export default function SiteHeader() {
                         ))}
                     </div>
                     <div className="mt-3 flex flex-col gap-2">
-                        <Link href={route('login')} className="btn btn-ghost justify-center">
-                            Entrar
-                        </Link>
-                        <Link href={route('register')} className="btn btn-solid justify-center">
-                            Criar Conta
-                        </Link>
+                        {user ? (
+                            <>
+                                <Link
+                                    href={route('dashboard')}
+                                    className="btn btn-ghost justify-center"
+                                >
+                                    <LayoutDashboard size={14} />
+                                    Dashboard
+                                </Link>
+                                <Link
+                                    href={route('profile.edit')}
+                                    className="btn btn-ghost justify-center"
+                                >
+                                    <User size={14} />
+                                    Perfil
+                                </Link>
+                                <Link
+                                    href={route('logout')}
+                                    method="post"
+                                    as="button"
+                                    className="btn btn-solid justify-center"
+                                >
+                                    <LogOut size={14} />
+                                    Sair
+                                </Link>
+                            </>
+                        ) : (
+                            <>
+                                <Link href={route('login')} className="btn btn-ghost justify-center">
+                                    Entrar
+                                </Link>
+                                <Link
+                                    href={route('register')}
+                                    className="btn btn-solid justify-center"
+                                >
+                                    Criar Conta
+                                </Link>
+                            </>
+                        )}
                     </div>
                 </div>
             )}

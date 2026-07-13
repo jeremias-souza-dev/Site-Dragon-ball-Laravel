@@ -6,12 +6,8 @@ import TextInput from '@/Components/TextInput';
 import AuthLayout from '@/Layouts/AuthLayout';
 import { Head, useForm } from '@inertiajs/react';
 
-export default function Create({ vocations, cities, worlds }) {
+export default function Character({ vocations, cities, worlds }) {
     const { data, setData, post, processing, errors, reset } = useForm({
-        name: '',
-        nickname: '',
-        password: '',
-        password_confirmation: '',
         character_name: '',
         sex: '1',
         vocation: '',
@@ -23,101 +19,22 @@ export default function Create({ vocations, cities, worlds }) {
         e.preventDefault();
 
         post(route('onboarding.store'), {
-            onFinish: () => reset('password', 'password_confirmation'),
+            onFinish: () => reset(),
         });
     };
 
     return (
         <>
-            <Head title="Complete seu cadastro" />
+            <Head title="Crie seu personagem" />
 
             <section className="auth-panel p-6 sm:p-8">
                 <span className="auth-kicker">Falta pouco</span>
-                <h1 className="auth-title mt-4 text-2xl sm:text-3xl">Complete seu cadastro</h1>
+                <h1 className="auth-title mt-4 text-2xl sm:text-3xl">Crie seu personagem</h1>
                 <p className="auth-copy mt-2 text-sm">
-                    Sua conta Google já está conectada. Agora crie a senha do jogo e o seu
-                    personagem para começar a jogar.
+                    Sua conta já está pronta. Agora crie o seu personagem para começar a jogar.
                 </p>
 
                 <form onSubmit={submit} className="mt-6 space-y-8">
-                    <div>
-                        <h2 className="text-sm font-semibold uppercase tracking-wide text-ki-orange">
-                            Informações da conta
-                        </h2>
-
-                        <div className="mt-4 grid gap-4 sm:grid-cols-2">
-                            <div>
-                                <InputLabel htmlFor="name" value="Login" />
-                                <TextInput
-                                    id="name"
-                                    name="name"
-                                    value={data.name}
-                                    className="mt-1.5"
-                                    autoComplete="username"
-                                    isFocused={true}
-                                    placeholder="nome_da_conta"
-                                    onChange={(e) => setData('name', e.target.value)}
-                                    required
-                                />
-                                <InputError message={errors.name} className="mt-2" />
-                            </div>
-
-                            <div>
-                                <InputLabel htmlFor="nickname" value="Nickname" />
-                                <TextInput
-                                    id="nickname"
-                                    name="nickname"
-                                    value={data.nickname}
-                                    className="mt-1.5"
-                                    placeholder="Como quer ser chamado"
-                                    onChange={(e) => setData('nickname', e.target.value)}
-                                    required
-                                />
-                                <InputError message={errors.nickname} className="mt-2" />
-                            </div>
-
-                            <div>
-                                <InputLabel htmlFor="password" value="Senha do jogo" />
-                                <TextInput
-                                    id="password"
-                                    type="password"
-                                    name="password"
-                                    value={data.password}
-                                    className="mt-1.5"
-                                    autoComplete="new-password"
-                                    placeholder="Sua senha"
-                                    onChange={(e) => setData('password', e.target.value)}
-                                    required
-                                />
-                                <InputError message={errors.password} className="mt-2" />
-                            </div>
-
-                            <div>
-                                <InputLabel
-                                    htmlFor="password_confirmation"
-                                    value="Confirmar senha"
-                                />
-                                <TextInput
-                                    id="password_confirmation"
-                                    type="password"
-                                    name="password_confirmation"
-                                    value={data.password_confirmation}
-                                    className="mt-1.5"
-                                    autoComplete="new-password"
-                                    placeholder="Repita a senha"
-                                    onChange={(e) =>
-                                        setData('password_confirmation', e.target.value)
-                                    }
-                                    required
-                                />
-                                <InputError
-                                    message={errors.password_confirmation}
-                                    className="mt-2"
-                                />
-                            </div>
-                        </div>
-                    </div>
-
                     <div>
                         <h2 className="text-sm font-semibold uppercase tracking-wide text-ki-orange">
                             Informações do personagem
@@ -131,6 +48,7 @@ export default function Create({ vocations, cities, worlds }) {
                                     name="character_name"
                                     value={data.character_name}
                                     className="mt-1.5"
+                                    isFocused={true}
                                     placeholder="Nome do personagem"
                                     onChange={(e) => setData('character_name', e.target.value)}
                                     required
@@ -223,7 +141,7 @@ export default function Create({ vocations, cities, worlds }) {
                     </div>
 
                     <PrimaryButton className="w-full justify-center py-3" disabled={processing}>
-                        Concluir cadastro
+                        Criar personagem
                     </PrimaryButton>
                 </form>
             </section>
@@ -231,4 +149,4 @@ export default function Create({ vocations, cities, worlds }) {
     );
 }
 
-Create.layout = (page) => <AuthLayout children={page} maxWidth="max-w-2xl" />;
+Character.layout = (page) => <AuthLayout children={page} maxWidth="max-w-2xl" />;

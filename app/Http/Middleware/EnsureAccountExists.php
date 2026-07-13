@@ -13,7 +13,7 @@ class EnsureAccountExists
         $user = $request->user();
 
         if ($user && ! $user->account()->exists()) {
-            return redirect()->route('onboarding.create');
+            return redirect()->route('register');
         }
 
         return $next($request);
