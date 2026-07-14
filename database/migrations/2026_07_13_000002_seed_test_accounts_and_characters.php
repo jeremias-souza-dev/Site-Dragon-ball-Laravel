@@ -52,6 +52,11 @@ return new class extends Migration
                 'town_id' => 1, // Terra
                 'world_id' => 0, // Terra
                 ...Player::defaultStats(),
+                'level' => 200,
+                'mana' => 9999,
+                'manamax' => 9999,
+                'ki' => 9999,
+                'kimax' => 9999,
             ],
             [
                 'name' => 'Teste Two',
@@ -62,6 +67,11 @@ return new class extends Migration
                 'town_id' => 1, // Terra
                 'world_id' => 0, // Terra
                 ...Player::defaultStats(),
+                'level' => 200,
+                'mana' => 9999,
+                'manamax' => 9999,
+                'ki' => 9999,
+                'kimax' => 9999,
             ],
         ]);
     }

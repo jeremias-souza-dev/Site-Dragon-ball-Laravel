@@ -66,10 +66,10 @@ export default function ChatTest({ players }) {
             <Head title="Teste de Chat" />
 
             <main className="mx-auto max-w-2xl px-4 py-16">
-                <h1 className="font-display text-3xl text-parchment">Chat (teste) — canal Game-Chat</h1>
+                <h1 className="font-display text-3xl text-parchment">Chat (teste) — canal Site</h1>
                 <p className="mt-2 text-sm text-ash">
-                    Mensagens enviadas aqui aparecem no jogo via <code>chatbridge.lua</code>. Mensagens enviadas no
-                    jogo com <code>!site</code> aparecem aqui.
+                    Mensagens enviadas aqui aparecem no canal "Site" do jogo via <code>chatbridge.lua</code>. Qualquer
+                    mensagem falada nesse canal no jogo aparece aqui automaticamente.
                 </p>
 
                 <div ref={listRef} className="mt-6 h-96 space-y-2 overflow-y-auto rounded-2xl border border-line bg-ember/30 p-4">

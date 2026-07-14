@@ -13,7 +13,7 @@ class ChatController extends Controller
     /**
      * Canais que o site tem permissao de ler/escrever (ver data/XML/channels.xml no servidor).
      */
-    private const ALLOWED_CHANNELS = [5];
+    private const ALLOWED_CHANNELS = [10];
 
     public function page(Request $request): Response
     {
