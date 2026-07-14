@@ -48,4 +48,14 @@ Route::middleware('auth')->prefix('admin')->name('admin.')->group(function () {
     Route::get('/config', fn () => Inertia::render('Admin/Settings'))->name('settings');
 });
 
+// Google Login Client Endpoints
+Route::get('api/google/client-redirect', [\App\Http\Controllers\Auth\GoogleController::class, 'clientRedirect'])->name('api.google.client_redirect');
+Route::get('api/google/status', [\App\Http\Controllers\Auth\GoogleController::class, 'clientStatus'])->name('api.google.status');
+Route::get('auth/google/client-success', function (\Illuminate\Http\Request $request) {
+    return \Inertia\Inertia::render('Auth/ClientGoogleSuccess', [
+        'accountName' => $request->query('account_name'),
+        'token' => $request->query('token')
+    ]);
+})->name('auth.google.client_success');
+
 require __DIR__.'/auth.php';

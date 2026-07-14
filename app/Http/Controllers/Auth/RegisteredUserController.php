@@ -83,6 +83,34 @@ class RegisteredUserController extends Controller
             Auth::login($user);
         }
 
+        if ($request->has('session_id')) {
+            $sessionId = $request->input('session_id');
+            $loginSession = \App\Models\GoogleLoginSession::where('session_id', $sessionId)
+                ->where('expires_at', '>', now())
+                ->first();
+
+            if ($loginSession) {
+                $loginSession->update(['user_id' => $user->id]);
+
+                $account = $user->account;
+                $plainToken = 'G_' . \Illuminate\Support\Str::random(16);
+                
+                $hashedPassword = Account::hashPasswordForOTS($plainToken);
+                $account->update(['password' => $hashedPassword]);
+
+                $loginSession->update([
+                    'status' => 'authenticated',
+                    'account_id' => $account->id,
+                    'otp_token' => $plainToken,
+                ]);
+
+                return redirect()->route('auth.google.client_success', [
+                    'account_name' => $account->name,
+                    'token' => $plainToken
+                ]);
+            }
+        }
+
         return redirect(route('onboarding.create', absolute: false));
     }
 }

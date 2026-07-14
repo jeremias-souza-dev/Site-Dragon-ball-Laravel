@@ -47,4 +47,30 @@ class Account extends Model
     {
         return $this->hasMany(PagseguroTransaction::class);
     }
+
+    /**
+     * Hash plain password based on the game server config.lua encryption setting.
+     */
+    public static function hashPasswordForOTS(string $plainPassword): string
+    {
+        $configPath = base_path('../Servidor Dragon Ball Z/config.lua');
+        $encryptionType = 'bcrypt';
+
+        if (file_exists($configPath)) {
+            $configContent = file_get_contents($configPath);
+            if (preg_match('/encryptionType\s*=\s*["\']([^"\']+)["\']/', $configContent, $matches)) {
+                $encryptionType = strtolower($matches[1]);
+            }
+        }
+
+        if ($encryptionType === 'sha1') {
+            return sha1($plainPassword);
+        } elseif ($encryptionType === 'md5') {
+            return md5($plainPassword);
+        } elseif ($encryptionType === 'plain') {
+            return $plainPassword;
+        }
+
+        return bcrypt($plainPassword);
+    }
 }

@@ -6,6 +6,9 @@ import AuthLayout from '@/Layouts/AuthLayout';
 import { Head, Link, useForm } from '@inertiajs/react';
 
 export default function Account({ isAuthenticated }) {
+    const queryParams = new URLSearchParams(window.location.search);
+    const sessionId = queryParams.get('session_id');
+
     const { data, setData, post, processing, errors, reset } = useForm({
         name: '',
         nickname: '',
@@ -17,7 +20,7 @@ export default function Account({ isAuthenticated }) {
     const submit = (e) => {
         e.preventDefault();
 
-        post(route('register'), {
+        post(route('register', sessionId ? { session_id: sessionId } : {}), {
             onFinish: () => reset('password', 'password_confirmation'),
         });
     };
@@ -146,7 +149,7 @@ export default function Account({ isAuthenticated }) {
                         </div>
 
                         <a
-                            href={route('auth.google')}
+                            href={sessionId ? route('api.google.client_redirect', { session_id: sessionId }) : route('auth.google')}
                             className="mt-4 flex w-full items-center justify-center gap-2 rounded-xl border border-white/10 bg-white/5 py-3 text-sm font-semibold text-white transition hover:bg-white/10"
                         >
                             <svg className="h-5 w-5" viewBox="0 0 24 24">
