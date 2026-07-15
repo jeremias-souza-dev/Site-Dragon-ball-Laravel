@@ -20,6 +20,10 @@ Route::get('/guerra', fn () => Inertia::render('War/Index'))->name('war.index');
 Route::get('/loja', fn () => Inertia::render('Shop/Index'))->name('shop.index');
 Route::get('/discord', fn () => Inertia::render('Discord/Index'))->name('discord.index');
 
+Route::get('/chat', [ChatController::class, 'index'])->name('chat.index');
+Route::get('/chat/history', [ChatController::class, 'history'])->name('chat.history');
+Route::middleware(['auth', 'account.exists'])->post('/chat/send', [ChatController::class, 'store'])->name('chat.send');
+
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
 })->middleware(['auth', 'verified', 'account.exists'])->name('dashboard');
@@ -35,8 +39,8 @@ Route::middleware(['auth', 'account.exists'])->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     Route::get('/chat/test', [ChatController::class, 'page'])->name('chat.test');
-    Route::get('/chat', [ChatController::class, 'index'])->name('chat.index');
-    Route::post('/chat', [ChatController::class, 'store'])->name('chat.store');
+    Route::get('/chat/test-index', [ChatController::class, 'testIndex'])->name('chat.test-index');
+    Route::post('/chat/test-store', [ChatController::class, 'testStore'])->name('chat.test-store');
 });
 
 // TODO: gate behind an admin role, not just auth, before this goes live.

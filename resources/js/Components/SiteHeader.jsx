@@ -10,6 +10,7 @@ const NAV_LINKS = [
     { label: 'Ranking', href: () => route('highscores.index') },
     { label: 'Guerra', href: () => route('war.index') },
     { label: 'Loja', href: () => route('shop.index') },
+    { label: 'Chat', href: () => route('chat.index') },
     { label: 'Discord', href: () => route('discord.index') },
 ];
 

@@ -35,4 +35,8 @@ export default defineConfig({
         }),
         react(),
     ],
+    server: {
+        port: 5183,
+        strictPort: true,
+    },
 });

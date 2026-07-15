@@ -15,7 +15,7 @@ export default function ChatTest({ players }) {
 
         async function poll() {
             try {
-                const { data } = await window.axios.get(route('chat.index'), {
+                const { data } = await window.axios.get(route('chat.test-index'), {
                     params: { since_id: lastIdRef.current },
                 });
 
@@ -51,7 +51,7 @@ export default function ChatTest({ players }) {
         }
 
         try {
-            await window.axios.post(route('chat.store'), {
+            await window.axios.post(route('chat.test-store'), {
                 player_id: playerId,
                 message: text,
             });

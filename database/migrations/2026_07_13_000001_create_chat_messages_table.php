@@ -20,8 +20,11 @@ return new class extends Migration
         Schema::create('chat_messages', function (Blueprint $table) {
             $table->increments('id');
             $table->enum('source', ['site', 'game']);
+            // TFS channel id: 5 = Game-Chat ("global"), 6 = Trade, 9 = Help
+            // (see servidor/data/XML/channels.xml).
             $table->unsignedSmallInteger('channel_id')->default(5);
             $table->string('author_name');
+            $table->foreignId('user_id')->nullable()->constrained()->nullOnDelete();
             $table->text('message');
             $table->timestamp('game_processed_at')->nullable();
             $table->timestamp('site_processed_at')->nullable();
@@ -29,6 +32,7 @@ return new class extends Migration
 
             $table->index(['source', 'game_processed_at']);
             $table->index(['source', 'site_processed_at']);
+            $table->index(['channel_id', 'created_at']);
         });
     }
 
